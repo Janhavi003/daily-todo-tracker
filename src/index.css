@@ -297,3 +297,32 @@ button.secondary {
   background: var(--bg-soft);
   font-weight: 600;
 }
+/* TASK ACTIONS */
+.task-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.task-actions button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+.task-actions button:hover {
+  opacity: 1;
+}
+
+/* INLINE EDIT INPUT */
+.edit-input {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-soft);
+  background: var(--bg-soft);
+  color: var(--text-main);
+}
