@@ -10,16 +10,29 @@ export default function Dashboard({ user }) {
   const [tasks, setTasks] = useState([]);
 
   return (
-    <div style={{ maxWidth: "500px", margin: "40px auto" }}>
-      <h1>Today’s Tasks</h1>
-      <p>{user.email}</p>
+    <div className="app">
+      <header className="header">
+        <h1>Today’s Tasks</h1>
+        <p className="user-email">{user.email}</p>
+      </header>
 
-      <ProgressBar tasks={tasks} />
+      <section className="progress-section">
+        <ProgressBar tasks={tasks} />
+      </section>
 
-      <TaskInput user={user} />
-      <TaskList user={user} tasks={tasks} setTasks={setTasks} />
+      <section className="input-section">
+        <TaskInput user={user} />
+      </section>
 
-      <button onClick={() => signOut(auth)}>Logout</button>
+      <section className="tasks-section">
+        <TaskList user={user} tasks={tasks} setTasks={setTasks} />
+      </section>
+
+      <footer className="footer">
+        <button className="logout-btn" onClick={() => signOut(auth)}>
+          Logout
+        </button>
+      </footer>
     </div>
   );
 }

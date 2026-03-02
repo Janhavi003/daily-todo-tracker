@@ -36,20 +36,25 @@ export default function TaskList({ user, tasks, setTasks }) {
     });
   };
 
+  /* Empty state */
   if (tasks.length === 0) {
-    return <p>No tasks yet</p>;
+    return <p className="empty-state">No tasks yet. Start small ✨</p>;
   }
 
   return (
-    <ul>
+    <ul className="task-list">
       {tasks.map((task) => (
-        <li key={task.id}>
+        <li
+          key={task.id}
+          className={`task-item ${task.completed ? "completed" : ""}`}
+        >
           <input
             type="checkbox"
             checked={task.completed}
             onChange={() => toggleTask(task)}
           />
-          {task.title}
+
+          <span className="task-title">{task.title}</span>
         </li>
       ))}
     </ul>

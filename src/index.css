@@ -1,68 +1,243 @@
+/* =========================
+   DESIGN SYSTEM
+========================= */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --bg-main: #0e0f11;
+  --bg-card: #16181d;
+  --bg-soft: #1f2229;
+  --border-soft: #2a2d36;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --text-main: #f1f1f1;
+  --text-muted: #9aa0aa;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --accent: #4ade80;
+  --danger: #ff6b6b;
+
+  --radius-lg: 18px;
+  --radius-md: 12px;
+
+  --shadow-lg: 0 30px 60px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+/* =========================
+   RESET
+========================= */
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont;
+  background: radial-gradient(circle at top, #181a20, var(--bg-main));
+  color: var(--text-main);
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* =========================
+   APP CONTAINER
+========================= */
+.app {
+  width: 100%;
+  max-width: 440px;
+  margin: 70px auto;
+  padding: 26px;
+  background: linear-gradient(180deg, #1a1d23, var(--bg-card));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  animation: fadeUp 0.5s ease;
 }
 
+/* =========================
+   HEADER
+========================= */
+.header h1 {
+  margin: 0;
+  font-size: 1.7rem;
+  letter-spacing: -0.5px;
+}
+
+.user-email {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* =========================
+   PROGRESS
+========================= */
+.progress-section {
+  margin: 18px 0 22px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* =========================
+   INPUT
+========================= */
+.input-section input {
+  width: 100%;
+  padding: 14px;
+  font-size: 0.95rem;
+  background: var(--bg-soft);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-section input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.15);
+}
+
+/* =========================
+   BUTTONS
+========================= */
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  margin-top: 10px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--accent);
+  color: #0b0f14;
+  font-weight: 600;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+button:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+button.secondary {
+  background: var(--bg-soft);
+  color: var(--text-main);
+}
+
+.logout-btn {
+  width: 100%;
+  margin-top: 28px;
+  background: var(--bg-soft);
+  color: var(--text-muted);
+}
+
+/* =========================
+   TASK LIST
+========================= */
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 18px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: var(--bg-soft);
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
+  border: 1px solid var(--border-soft);
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.task-item:hover {
+  background: #262a33;
+  transform: translateY(-1px);
+}
+
+.task-title {
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+/* Completed task */
+.task-item.completed .task-title {
+  text-decoration: line-through;
+  opacity: 0.45;
+}
+
+/* Checkbox */
+.task-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+.empty-state {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* =========================
+   AUTH PAGE
+========================= */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 360px;
+  padding: 28px;
+  background: linear-gradient(180deg, #1a1d23, var(--bg-card));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.auth-card h1 {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 12px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+}
+
+.auth-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.auth-actions button {
+  flex: 1;
+}
+
+.error-text {
+  color: var(--danger);
+  font-size: 0.85rem;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

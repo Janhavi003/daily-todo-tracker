@@ -13,7 +13,6 @@ export default function Login() {
   const signup = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      alert("Signup successful");
     } catch (err) {
       setError(err.message);
     }
@@ -22,32 +21,37 @@ export default function Login() {
   const login = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert("Login successful");
     } catch (err) {
       setError(err.message);
     }
   };
 
   return (
-    <div>
-      <h2>Login / Signup</h2>
+    <div className="auth-page">
+      <div className="auth-card">
+        <h1>Login / Signup</h1>
 
-      <input
-        type="email"
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
+        <input
+          type="email"
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <input
+          type="password"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      <button onClick={signup}>Sign Up</button>
-      <button onClick={login}>Login</button>
+        {error && <p className="error-text">{error}</p>}
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        <div className="auth-actions">
+          <button onClick={signup}>Sign Up</button>
+          <button className="secondary" onClick={login}>
+            Login
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
