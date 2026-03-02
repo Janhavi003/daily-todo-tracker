@@ -10,8 +10,14 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const isLight = document.body.classList.contains("light");
+
+  const setLight = () => document.body.classList.add("light");
+  const setDark = () => document.body.classList.remove("light");
+
   const signup = async () => {
     try {
+      setError("");
       await createUserWithEmailAndPassword(auth, email, password);
     } catch (err) {
       setError(err.message);
@@ -20,6 +26,7 @@ export default function Login() {
 
   const login = async () => {
     try {
+      setError("");
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
       setError(err.message);
@@ -29,17 +36,38 @@ export default function Login() {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <h1>Login / Signup</h1>
+        <div className="header">
+          <div>
+            <h1 className="auth-title">Welcome! </h1>
+          </div>
+
+          <div className="theme-text-toggle">
+            <span
+              className={isLight ? "active" : ""}
+              onClick={setLight}
+            >
+              Light
+            </span>
+            <span
+              className={!isLight ? "active" : ""}
+              onClick={setDark}
+            >
+              Dark
+            </span>
+          </div>
+        </div>
 
         <input
           type="email"
           placeholder="Email"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
           type="password"
           placeholder="Password"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 

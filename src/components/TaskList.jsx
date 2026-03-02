@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../firebase";
 import {
   collection,
@@ -7,9 +7,13 @@ import {
   onSnapshot,
   updateDoc,
   doc,
+  deleteDoc,
 } from "firebase/firestore";
 
 export default function TaskList({ user, tasks, setTasks }) {
+  const [editingId, setEditingId] = useState(null);
+  const [editText, setEditText] = useState("");
+
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
 
@@ -19,15 +23,11 @@ export default function TaskList({ user, tasks, setTasks }) {
       where("date", "==", today)
     );
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map((d) => ({
-        id: d.id,
-        ...d.data(),
-      }));
-      setTasks(data);
+    const unsub = onSnapshot(q, (snap) => {
+      setTasks(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
     });
 
-    return () => unsubscribe();
+    return () => unsub();
   }, [user.uid, setTasks]);
 
   const toggleTask = async (task) => {
@@ -36,9 +36,18 @@ export default function TaskList({ user, tasks, setTasks }) {
     });
   };
 
-  /* Empty state */
+  const saveEdit = async (task) => {
+    if (!editText.trim()) return;
+    await updateDoc(doc(db, "tasks", task.id), { title: editText });
+    setEditingId(null);
+  };
+
+  const deleteTask = async (id) => {
+    await deleteDoc(doc(db, "tasks", id));
+  };
+
   if (tasks.length === 0) {
-    return <p className="empty-state">No tasks yet. Start small ✨</p>;
+    return <p className="empty-state">No tasks yet ✨</p>;
   }
 
   return (
@@ -54,7 +63,35 @@ export default function TaskList({ user, tasks, setTasks }) {
             onChange={() => toggleTask(task)}
           />
 
-          <span className="task-title">{task.title}</span>
+          {editingId === task.id ? (
+            <input
+              className="inline-edit"
+              value={editText}
+              onChange={(e) => setEditText(e.target.value)}
+              onBlur={() => saveEdit(task)}
+              autoFocus
+            />
+          ) : (
+            <span
+              className="task-title"
+              onDoubleClick={() => {
+                setEditingId(task.id);
+                setEditText(task.title);
+              }}
+            >
+              {task.title}
+            </span>
+          )}
+
+          <div className="task-actions">
+            <button
+              className="icon-btn"
+              onClick={() => deleteTask(task.id)}
+              title="Delete"
+            >
+              ✕
+            </button>
+          </div>
         </li>
       ))}
     </ul>

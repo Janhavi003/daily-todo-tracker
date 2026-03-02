@@ -9,11 +9,34 @@ import ProgressBar from "../components/ProgressBar";
 export default function Dashboard({ user }) {
   const [tasks, setTasks] = useState([]);
 
+  const isLight = document.body.classList.contains("light");
+
+  const setLight = () => document.body.classList.add("light");
+  const setDark = () => document.body.classList.remove("light");
+
   return (
     <div className="app">
+      {/* HEADER */}
       <header className="header">
-        <h1>Today’s Tasks</h1>
-        <p className="user-email">{user.email}</p>
+        <div>
+          <h1>Today’s Tasks</h1>
+          <p className="user-email">{user.email}</p>
+        </div>
+
+        <div className="theme-text-toggle">
+          <span
+            className={isLight ? "active" : ""}
+            onClick={setLight}
+          >
+            Light
+          </span>
+          <span
+            className={!isLight ? "active" : ""}
+            onClick={setDark}
+          >
+            Dark
+          </span>
+        </div>
       </header>
 
       <section className="progress-section">
@@ -28,7 +51,7 @@ export default function Dashboard({ user }) {
         <TaskList user={user} tasks={tasks} setTasks={setTasks} />
       </section>
 
-      <footer className="footer">
+      <footer>
         <button className="logout-btn" onClick={() => signOut(auth)}>
           Logout
         </button>
