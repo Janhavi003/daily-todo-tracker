@@ -5,6 +5,7 @@ import { auth } from "../firebase";
 import TaskInput from "../components/TaskInput";
 import TaskList from "../components/TaskList";
 import ProgressBar from "../components/ProgressBar";
+import WeeklyHistory from "../components/WeeklyHistory";
 
 export default function Dashboard({ user }) {
   const [tasks, setTasks] = useState([]);
@@ -50,6 +51,7 @@ export default function Dashboard({ user }) {
       <section className="tasks-section">
         <TaskList user={user} tasks={tasks} setTasks={setTasks} />
       </section>
+      <WeeklyHistory user={user} />
 
       <footer>
         <button className="logout-btn" onClick={() => signOut(auth)}>

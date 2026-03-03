@@ -19,7 +19,7 @@
   --shadow-lg: 0 30px 60px rgba(0, 0, 0, 0.6);
 }
 
-/* LIGHT THEME */
+/* LIGHT MODE */
 .light {
   --bg-main: #f5f6f8;
   --bg-card: #ffffff;
@@ -84,20 +84,31 @@ body {
 }
 
 /* =========================
-   THEME TOGGLE
+   TEXT THEME TOGGLE
 ========================= */
-.theme-toggle {
-  padding: 8px 12px;
-  font-size: 0.8rem;
-  background: var(--bg-soft);
-  color: var(--text-muted);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius-md);
-  cursor: pointer;
+.theme-text-toggle {
+  display: flex;
+  gap: 10px;
+  font-size: 0.85rem;
+  user-select: none;
 }
 
-.theme-toggle:hover {
+.theme-text-toggle span {
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.theme-text-toggle span:hover {
+  background: var(--bg-soft);
+}
+
+.theme-text-toggle span.active {
   color: var(--text-main);
+  background: var(--bg-soft);
+  font-weight: 600;
 }
 
 /* =========================
@@ -120,7 +131,6 @@ body {
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-md);
   color: var(--text-main);
-  transition: border 0.2s ease, box-shadow 0.2s ease;
 }
 
 .input-section input:focus {
@@ -192,6 +202,45 @@ button.secondary {
 }
 
 /* =========================
+   EDIT / DELETE ACTIONS
+========================= */
+.task-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.task-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-main); /* 🔥 FIXED */
+  opacity: 0.7;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.task-actions button:hover {
+  opacity: 1;
+}
+
+.task-actions button:last-child:hover {
+  color: var(--danger);
+}
+
+/* =========================
+   INLINE EDIT INPUT
+========================= */
+.edit-input {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-soft);
+  background: var(--bg-soft);
+  color: var(--text-main);
+}
+
+/* =========================
    EMPTY STATE
 ========================= */
 .empty-state {
@@ -199,6 +248,50 @@ button.secondary {
   margin-top: 20px;
   font-size: 0.9rem;
   color: var(--text-muted);
+}
+
+/* =========================
+   WEEKLY HISTORY
+========================= */
+.weekly-history {
+  margin-top: 32px;
+}
+
+.weekly-history h3 {
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+.weekly-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 80px;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.weekly-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.weekly-bar {
+  height: 8px;
+  background: var(--bg-soft);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.weekly-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 6px;
+}
+
+.weekly-percent {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: right;
 }
 
 /* =========================
@@ -219,9 +312,15 @@ button.secondary {
   box-shadow: var(--shadow-lg);
 }
 
-.auth-card h1 {
-  text-align: center;
-  margin-bottom: 18px;
+.auth-title {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.auth-subtitle {
+  margin: 6px 0 18px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
 }
 
 .auth-card input {
@@ -271,58 +370,4 @@ button.secondary {
     width: 100%;
     margin: 20px;
   }
-}
-/* TEXT THEME TOGGLE */
-.theme-text-toggle {
-  display: flex;
-  gap: 10px;
-  font-size: 0.85rem;
-  user-select: none;
-}
-
-.theme-text-toggle span {
-  cursor: pointer;
-  color: var(--text-muted);
-  padding: 4px 8px;
-  border-radius: 8px;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.theme-text-toggle span:hover {
-  background: var(--bg-soft);
-}
-
-.theme-text-toggle span.active {
-  color: var(--text-main);
-  background: var(--bg-soft);
-  font-weight: 600;
-}
-/* TASK ACTIONS */
-.task-actions {
-  display: flex;
-  gap: 6px;
-}
-
-.task-actions button {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 0.9rem;
-  opacity: 0.6;
-}
-
-.task-actions button:hover {
-  opacity: 1;
-}
-
-/* INLINE EDIT INPUT */
-.edit-input {
-  flex: 1;
-  padding: 6px 8px;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  border: 1px solid var(--border-soft);
-  background: var(--bg-soft);
-  color: var(--text-main);
 }
