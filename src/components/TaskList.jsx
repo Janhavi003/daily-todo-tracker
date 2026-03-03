@@ -10,17 +10,21 @@ import {
   doc,
 } from "firebase/firestore";
 
-export default function TaskList({ user, tasks, setTasks }) {
+export default function TaskList({
+  user,
+  tasks,
+  setTasks,
+  selectedDate,
+  isToday,
+}) {
   const [editingId, setEditingId] = useState(null);
   const [editValue, setEditValue] = useState("");
 
   useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
-
     const q = query(
       collection(db, "tasks"),
       where("uid", "==", user.uid),
-      where("date", "==", today)
+      where("date", "==", selectedDate)
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -32,15 +36,18 @@ export default function TaskList({ user, tasks, setTasks }) {
     });
 
     return () => unsubscribe();
-  }, [user.uid, setTasks]);
+  }, [user.uid, selectedDate, setTasks]);
 
   const toggleTask = async (task) => {
+    if (!isToday) return;
+
     await updateDoc(doc(db, "tasks", task.id), {
       completed: !task.completed,
     });
   };
 
   const startEdit = (task) => {
+    if (!isToday) return;
     setEditingId(task.id);
     setEditValue(task.title);
   };
@@ -56,11 +63,12 @@ export default function TaskList({ user, tasks, setTasks }) {
   };
 
   const deleteTask = async (id) => {
+    if (!isToday) return;
     await deleteDoc(doc(db, "tasks", id));
   };
 
   if (tasks.length === 0) {
-    return <p className="empty-state">No tasks for today</p>;
+    return <p className="empty-state">No tasks for this day</p>;
   }
 
   return (
@@ -73,6 +81,7 @@ export default function TaskList({ user, tasks, setTasks }) {
           <input
             type="checkbox"
             checked={task.completed}
+            disabled={!isToday}
             onChange={() => toggleTask(task)}
           />
 
@@ -94,10 +103,12 @@ export default function TaskList({ user, tasks, setTasks }) {
             </span>
           )}
 
-          <div className="task-actions">
-            <button onClick={() => startEdit(task)}>edit</button>
-            <button onClick={() => deleteTask(task.id)}>delete</button>
-          </div>
+          {isToday && (
+            <div className="task-actions">
+              <button onClick={() => startEdit(task)}>Edit</button>
+              <button onClick={() => deleteTask(task.id)}>Delete</button>
+            </div>
+          )}
         </li>
       ))}
     </ul>
