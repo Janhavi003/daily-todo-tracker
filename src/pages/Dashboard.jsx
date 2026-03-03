@@ -6,17 +6,18 @@ import TaskInput from "../components/TaskInput";
 import TaskList from "../components/TaskList";
 import ProgressBar from "../components/ProgressBar";
 import WeeklyHistory from "../components/WeeklyHistory";
+import useStreak from "../hooks/useStreak";
 
 export default function Dashboard({ user }) {
   const today = new Date().toISOString().split("T")[0];
 
   const [tasks, setTasks] = useState([]);
   const [selectedDate, setSelectedDate] = useState(today);
-  const [username, setUsername] = useState(
-    user.displayName || ""
-  );
+  const [username, setUsername] = useState(user.displayName || "");
 
   const isToday = selectedDate === today;
+  const streak = useStreak(user.uid);
+
   const isLight = document.body.classList.contains("light");
 
   /* =========================
@@ -56,7 +57,7 @@ export default function Dashboard({ user }) {
             {isToday ? "Today’s Tasks" : `Tasks for ${selectedDate}`}
           </h1>
           <p className="user-email">
-            Hi, {username || "User"} 
+            Hi, {username || "User"} 👋
           </p>
         </div>
 
@@ -69,6 +70,11 @@ export default function Dashboard({ user }) {
           </span>
         </div>
       </header>
+
+      {/* ================= STREAK ================= */}
+      <div className="streak-card">
+        🔥 {streak} day streak
+      </div>
 
       {/* ================= PROGRESS (TODAY ONLY) ================= */}
       {isToday && (
