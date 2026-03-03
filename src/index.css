@@ -396,3 +396,17 @@ button.secondary {
     margin: 20px;
   }
 }
+.streak-card {
+  margin: 14px 0;
+  padding: 10px 14px;
+  background: linear-gradient(
+    135deg,
+    var(--accent),
+    #16a34a
+  );
+  color: #062e16;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-align: center;
+}
