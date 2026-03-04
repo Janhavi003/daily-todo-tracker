@@ -396,17 +396,59 @@ button.secondary {
     margin: 20px;
   }
 }
+/* =========================
+   STREAK CARD
+========================= */
 .streak-card {
   margin: 14px 0;
-  padding: 10px 14px;
-  background: linear-gradient(
-    135deg,
-    var(--accent),
-    #16a34a
-  );
-  color: #062e16;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #052e16;
   border-radius: 12px;
   font-weight: 700;
   font-size: 0.95rem;
   text-align: center;
+  transition: transform 0.2s ease;
+}
+
+/* POP EFFECT */
+.streak-pop {
+  animation: streakPop 0.6s ease;
+}
+
+@keyframes streakPop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* FIRE GLOW EFFECT */
+.streak-glow {
+  animation: streakGlow 1.4s ease;
+}
+
+@keyframes streakGlow {
+  0% {
+    box-shadow: 0 0 0 rgba(255, 120, 0, 0);
+  }
+
+  30% {
+    box-shadow: 0 0 20px rgba(255, 120, 0, 0.7),
+      0 0 40px rgba(255, 90, 0, 0.6);
+  }
+
+  60% {
+    box-shadow: 0 0 28px rgba(255, 150, 0, 0.8),
+      0 0 50px rgba(255, 90, 0, 0.7);
+  }
+
+  100% {
+    box-shadow: 0 0 0 rgba(255, 120, 0, 0);
+  }
 }

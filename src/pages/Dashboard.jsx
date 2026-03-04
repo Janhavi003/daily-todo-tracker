@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { signOut, updateProfile } from "firebase/auth";
 import { auth } from "../firebase";
 
@@ -14,10 +14,12 @@ export default function Dashboard({ user }) {
   const [tasks, setTasks] = useState([]);
   const [selectedDate, setSelectedDate] = useState(today);
   const [username, setUsername] = useState(user.displayName || "");
+  const [animateStreak, setAnimateStreak] = useState(false);
 
-  const isToday = selectedDate === today;
+  const prevStreak = useRef(0);
   const streak = useStreak(user.uid);
 
+  const isToday = selectedDate === today;
   const isLight = document.body.classList.contains("light");
 
   /* =========================
@@ -43,6 +45,23 @@ export default function Dashboard({ user }) {
   }, [user]);
 
   /* =========================
+     STREAK ANIMATION
+  ========================= */
+ useEffect(() => {
+  if (prevStreak.current !== 0 && streak > prevStreak.current) {
+    requestAnimationFrame(() => {
+      setAnimateStreak(true);
+
+      setTimeout(() => {
+        setAnimateStreak(false);
+      }, 1400);
+    });
+  }
+
+  prevStreak.current = streak;
+}, [streak]);
+
+  /* =========================
      THEME TOGGLE
   ========================= */
   const setLight = () => document.body.classList.add("light");
@@ -50,7 +69,7 @@ export default function Dashboard({ user }) {
 
   return (
     <div className="app">
-      {/* ================= HEADER ================= */}
+      {/* HEADER */}
       <header className="header">
         <div>
           <h1>
@@ -71,26 +90,30 @@ export default function Dashboard({ user }) {
         </div>
       </header>
 
-      {/* ================= STREAK ================= */}
-      <div className="streak-card">
+      {/* STREAK */}
+      <div
+        className={`streak-card ${
+          animateStreak ? "streak-pop streak-glow" : ""
+        }`}
+      >
         🔥 {streak} day streak
       </div>
 
-      {/* ================= PROGRESS (TODAY ONLY) ================= */}
+      {/* PROGRESS */}
       {isToday && (
         <section className="progress-section">
           <ProgressBar tasks={tasks} />
         </section>
       )}
 
-      {/* ================= ADD TASK (TODAY ONLY) ================= */}
+      {/* ADD TASK */}
       {isToday && (
         <section className="input-section">
           <TaskInput user={user} />
         </section>
       )}
 
-      {/* ================= TASK LIST ================= */}
+      {/* TASK LIST */}
       <section className="tasks-section">
         <TaskList
           user={user}
@@ -101,14 +124,14 @@ export default function Dashboard({ user }) {
         />
       </section>
 
-      {/* ================= WEEKLY HISTORY ================= */}
+      {/* WEEKLY HISTORY */}
       <WeeklyHistory
         user={user}
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />
 
-      {/* ================= FOOTER ================= */}
+      {/* FOOTER */}
       <footer>
         <button
           className="logout-btn"
