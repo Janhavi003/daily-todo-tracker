@@ -7,6 +7,7 @@ import TaskList from "../components/TaskList";
 import ProgressBar from "../components/ProgressBar";
 import WeeklyHistory from "../components/WeeklyHistory";
 import useStreak from "../hooks/useStreak";
+import CalendarView from "../components/CalendarView";
 
 export default function Dashboard({ user }) {
   const today = new Date().toISOString().split("T")[0];
@@ -98,6 +99,11 @@ export default function Dashboard({ user }) {
       >
         🔥 {streak} day streak
       </div>
+      <CalendarView
+  user={user}
+  selectedDate={selectedDate}
+  setSelectedDate={setSelectedDate}
+/>
 
       {/* PROGRESS */}
       {isToday && (

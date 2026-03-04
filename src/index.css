@@ -452,3 +452,46 @@ button.secondary {
     box-shadow: 0 0 0 rgba(255, 120, 0, 0);
   }
 }
+/* =========================
+   CALENDAR
+========================= */
+
+.calendar {
+  margin-top: 18px;
+}
+
+.calendar h3 {
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.calendar-day {
+  padding: 8px;
+  text-align: center;
+  border-radius: 6px;
+  cursor: pointer;
+  background: var(--bg-soft);
+  font-size: 0.85rem;
+  color: var(--text-main); 
+  font-weight: 500;
+}
+
+.calendar-day:hover {
+  background: var(--border-soft);
+}
+
+.calendar-selected {
+  background: var(--accent);
+  color: #062e16;
+  font-weight: 600;
+}
+
+.calendar-complete {
+  border: 2px solid var(--accent);
+}
