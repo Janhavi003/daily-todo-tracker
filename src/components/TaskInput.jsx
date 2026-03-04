@@ -2,7 +2,7 @@ import { useState } from "react";
 import { db } from "../firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
-export default function TaskInput({ user }) {
+export default function TaskInput({ user, inputRef }) {
   const [title, setTitle] = useState("");
 
   const addTask = async () => {
@@ -22,11 +22,14 @@ export default function TaskInput({ user }) {
   return (
     <div>
       <input
-        placeholder="New task..."
+  ref={inputRef}
+  type="text"
+  placeholder="New task..."
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
       <button onClick={addTask}>Add</button>
+      
     </div>
   );
 }

@@ -16,6 +16,7 @@ export default function Dashboard({ user }) {
   const [selectedDate, setSelectedDate] = useState(today);
   const [username, setUsername] = useState(user.displayName || "");
   const [animateStreak, setAnimateStreak] = useState(false);
+  const taskInputRef = useRef(null);
 
   const prevStreak = useRef(0);
   const streak = useStreak(user.uid);
@@ -61,7 +62,45 @@ export default function Dashboard({ user }) {
 
   prevStreak.current = streak;
 }, [streak]);
+  useEffect(() => {
+  const handleKey = (e) => {
+    const active = document.activeElement;
 
+    // Prevent shortcuts while typing
+    if (active.tagName === "INPUT" || active.tagName === "TEXTAREA") return;
+
+    // N → focus new task
+    if (e.key === "n" || e.key === "N") {
+      e.preventDefault();
+      taskInputRef.current?.focus();
+    }
+
+    // T → go to today
+    if (e.key === "t" || e.key === "T") {
+      e.preventDefault();
+      const today = new Date().toISOString().split("T")[0];
+      setSelectedDate(today);
+    }
+
+    // Arrow Right → next day
+    if (e.key === "ArrowRight") {
+      const d = new Date(selectedDate);
+      d.setDate(d.getDate() + 1);
+      setSelectedDate(d.toISOString().split("T")[0]);
+    }
+
+    // Arrow Left → previous day
+    if (e.key === "ArrowLeft") {
+      const d = new Date(selectedDate);
+      d.setDate(d.getDate() - 1);
+      setSelectedDate(d.toISOString().split("T")[0]);
+    }
+  };
+
+  window.addEventListener("keydown", handleKey);
+
+  return () => window.removeEventListener("keydown", handleKey);
+}, [selectedDate]);
   /* =========================
      THEME TOGGLE
   ========================= */
@@ -91,6 +130,10 @@ export default function Dashboard({ user }) {
         </div>
       </header>
 
+      {/* KEYBOARD SHORTCUT HINT */}
+<p className="keyboard-hints">
+  Shortcuts: N → new task • ← → change day • T → today
+</p>
       {/* STREAK */}
       <div
         className={`streak-card ${
@@ -115,7 +158,7 @@ export default function Dashboard({ user }) {
       {/* ADD TASK */}
       {isToday && (
         <section className="input-section">
-          <TaskInput user={user} />
+          <TaskInput user={user} inputRef={taskInputRef} />
         </section>
       )}
 
