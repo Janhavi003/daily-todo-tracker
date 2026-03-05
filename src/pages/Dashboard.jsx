@@ -6,8 +6,9 @@ import TaskInput from "../components/TaskInput";
 import TaskList from "../components/TaskList";
 import ProgressBar from "../components/ProgressBar";
 import WeeklyHistory from "../components/WeeklyHistory";
-import useStreak from "../hooks/useStreak";
 import CalendarView from "../components/CalendarView";
+
+import useStreak from "../hooks/useStreak";
 
 export default function Dashboard({ user }) {
   const today = new Date().toISOString().split("T")[0];
@@ -16,17 +17,16 @@ export default function Dashboard({ user }) {
   const [selectedDate, setSelectedDate] = useState(today);
   const [username, setUsername] = useState(user.displayName || "");
   const [animateStreak, setAnimateStreak] = useState(false);
-  const taskInputRef = useRef(null);
 
+  const taskInputRef = useRef(null);
   const prevStreak = useRef(0);
+
   const streak = useStreak(user.uid);
 
   const isToday = selectedDate === today;
   const isLight = document.body.classList.contains("light");
 
-  /* =========================
-     ENSURE USERNAME EXISTS
-  ========================= */
+  /* USERNAME */
   useEffect(() => {
     const ensureUsername = async () => {
       if (!user.displayName) {
@@ -36,6 +36,7 @@ export default function Dashboard({ user }) {
           await updateProfile(user, {
             displayName: name.trim(),
           });
+
           setUsername(name.trim());
         }
       } else {
@@ -46,75 +47,68 @@ export default function Dashboard({ user }) {
     ensureUsername();
   }, [user]);
 
-  /* =========================
-     STREAK ANIMATION
-  ========================= */
- useEffect(() => {
-  if (prevStreak.current !== 0 && streak > prevStreak.current) {
-    requestAnimationFrame(() => {
-      setAnimateStreak(true);
-
-      setTimeout(() => {
-        setAnimateStreak(false);
-      }, 1400);
-    });
-  }
-
-  prevStreak.current = streak;
-}, [streak]);
+  /* STREAK ANIMATION */
   useEffect(() => {
-  const handleKey = (e) => {
-    const active = document.activeElement;
+    if (prevStreak.current !== 0 && streak > prevStreak.current) {
+      requestAnimationFrame(() => {
+        setAnimateStreak(true);
 
-    // Prevent shortcuts while typing
-    if (active.tagName === "INPUT" || active.tagName === "TEXTAREA") return;
-
-    // N → focus new task
-    if (e.key === "n" || e.key === "N") {
-      e.preventDefault();
-      taskInputRef.current?.focus();
+        setTimeout(() => {
+          setAnimateStreak(false);
+        }, 1200);
+      });
     }
 
-    // T → go to today
-    if (e.key === "t" || e.key === "T") {
-      e.preventDefault();
-      const today = new Date().toISOString().split("T")[0];
-      setSelectedDate(today);
-    }
+    prevStreak.current = streak;
+  }, [streak]);
 
-    // Arrow Right → next day
-    if (e.key === "ArrowRight") {
-      const d = new Date(selectedDate);
-      d.setDate(d.getDate() + 1);
-      setSelectedDate(d.toISOString().split("T")[0]);
-    }
+  /* KEYBOARD SHORTCUTS */
+  useEffect(() => {
+    const handleKey = (e) => {
+      const active = document.activeElement;
 
-    // Arrow Left → previous day
-    if (e.key === "ArrowLeft") {
-      const d = new Date(selectedDate);
-      d.setDate(d.getDate() - 1);
-      setSelectedDate(d.toISOString().split("T")[0]);
-    }
-  };
+      if (active.tagName === "INPUT") return;
 
-  window.addEventListener("keydown", handleKey);
+      if (e.key === "n") {
+        taskInputRef.current?.focus();
+      }
 
-  return () => window.removeEventListener("keydown", handleKey);
-}, [selectedDate]);
-  /* =========================
-     THEME TOGGLE
-  ========================= */
+      if (e.key === "t") {
+        setSelectedDate(today);
+      }
+
+      if (e.key === "ArrowRight") {
+        const d = new Date(selectedDate);
+        d.setDate(d.getDate() + 1);
+        setSelectedDate(d.toISOString().split("T")[0]);
+      }
+
+      if (e.key === "ArrowLeft") {
+        const d = new Date(selectedDate);
+        d.setDate(d.getDate() - 1);
+        setSelectedDate(d.toISOString().split("T")[0]);
+      }
+    };
+
+    window.addEventListener("keydown", handleKey);
+
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [selectedDate]);
+
+  /* THEME */
   const setLight = () => document.body.classList.add("light");
   const setDark = () => document.body.classList.remove("light");
 
   return (
+    
     <div className="app">
-      {/* HEADER */}
+      
       <header className="header">
         <div>
           <h1>
             {isToday ? "Today’s Tasks" : `Tasks for ${selectedDate}`}
           </h1>
+
           <p className="user-email">
             Hi, {username || "User"} 👋
           </p>
@@ -124,17 +118,17 @@ export default function Dashboard({ user }) {
           <span className={isLight ? "active" : ""} onClick={setLight}>
             Light
           </span>
+
           <span className={!isLight ? "active" : ""} onClick={setDark}>
             Dark
           </span>
         </div>
       </header>
 
-      {/* KEYBOARD SHORTCUT HINT */}
-<p className="keyboard-hints">
-  Shortcuts: N → new task • ← → change day • T → today
-</p>
-      {/* STREAK */}
+      <p className="keyboard-hints">
+        Shortcuts: N → new task • ← → change day • T → today
+      </p>
+
       <div
         className={`streak-card ${
           animateStreak ? "streak-pop streak-glow" : ""
@@ -142,27 +136,25 @@ export default function Dashboard({ user }) {
       >
         🔥 {streak} day streak
       </div>
-      <CalendarView
-  user={user}
-  selectedDate={selectedDate}
-  setSelectedDate={setSelectedDate}
-/>
 
-      {/* PROGRESS */}
+      <CalendarView
+        user={user}
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+      />
+
       {isToday && (
         <section className="progress-section">
           <ProgressBar tasks={tasks} />
         </section>
       )}
 
-      {/* ADD TASK */}
       {isToday && (
         <section className="input-section">
           <TaskInput user={user} inputRef={taskInputRef} />
         </section>
       )}
 
-      {/* TASK LIST */}
       <section className="tasks-section">
         <TaskList
           user={user}
@@ -173,14 +165,12 @@ export default function Dashboard({ user }) {
         />
       </section>
 
-      {/* WEEKLY HISTORY */}
       <WeeklyHistory
         user={user}
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />
 
-      {/* FOOTER */}
       <footer>
         <button
           className="logout-btn"

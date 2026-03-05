@@ -1,16 +1,58 @@
-# React + Vite
+# Daily Productivity Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern productivity web application to manage daily tasks, track completion progress, and build consistent habits through streaks and weekly insights.
 
-Currently, two official plugins are available:
+🔗 **Live Demo:**
+https://daily-todo-tracker-progress.web.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* User Authentication with Firebase
+* Create, edit, and delete daily tasks
+* Task completion tracking
+* Daily progress bar
+* Streak system to encourage consistency
+* Weekly productivity overview
+* Interactive calendar to view tasks by date
+* Keyboard shortcuts for fast navigation
+* Dark / Light theme toggle
+* Responsive modern UI
+* Real-time data updates with Firestore
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Keyboard Shortcuts
+
+| Shortcut  | Action                |
+| --------- | --------------------- |
+| **N**     | Focus new task input  |
+| **T**     | Jump to today's tasks |
+| **← / →** | Navigate between days |
+
+---
+
+## Tech Stack
+
+Frontend:
+
+* React
+* Vite
+* CSS
+
+Backend / Services:
+
+* Firebase Authentication
+* Cloud Firestore
+* Firebase Hosting
+
+Tools:
+
+* Git
+* GitHub
+
+---
+
+
+
